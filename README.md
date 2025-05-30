@@ -1,58 +1,131 @@
-# Turborepo Tailwind CSS starter
+# Sui Ticketmaster – Decentralized Ticketing System
 
-This Turborepo starter is maintained by the Turborepo core team.
+## Overview
 
-## Using this example
+**Sui Ticketmaster** is a decentralized ticketing platform built on the [Sui blockchain](https://sui.io/), inspired by Ticketmaster. It leverages blockchain technology to provide transparent, secure, and fair ticket distribution, resale, and validation for events. Each ticket is represented as an NFT (Non-Fungible Token), ensuring authenticity and preventing fraud or double-selling.
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest -e with-tailwind
+## Features
+
+- **Event Creation:** Event organizers can create and manage events on-chain.
+- **NFT Ticket Minting:** Tickets are minted as NFTs, uniquely representing each seat or entry.
+- **Primary Sales:** Users can purchase tickets directly from event organizers.
+- **Secondary Market:** Safe peer-to-peer ticket resale with optional royalty enforcement.
+- **On-Chain Ownership:** All ticket transfers and ownership are transparent and verifiable.
+- **Ticket Validation:** Tickets can be marked as used upon entry, preventing reuse.
+- **Fraud Prevention:** Blockchain provenance eliminates counterfeiting and double-spending.
+- **Scalable & User-Friendly:** Optimized for a smooth user experience, abstracting blockchain complexity where possible.
+
+---
+
+## Folder Structure
+
+```
+apps/
+  web/                 # dApp
+
+packages/
+  ui/                  # Shared UI components
+  ticketmaster/        # Move smart contract for ticketing logic
 ```
 
-## What's inside?
+- **apps/web**: The frontend decentralized application (dApp) using Next.js, Tailwind CSS, shadcnui for UI, and Prisma for data modeling.
+- **packages/ui**: A collection of reusable UI components shared across the project.
+- **packages/ticketmaster**: The Move contract source code that implements the ticketing logic on the Sui blockchain.
 
-This Turborepo includes the following packages/apps:
+---
 
-### Apps and Packages
+## Tech stack
 
-- `docs`: a [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `web`: another [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `ui`: a stub React component library with [Tailwind CSS](https://tailwindcss.com/) shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Frontend
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- Next.js
+- Tailwindcss
+- ShadcnUI
 
-### Building packages/ui
+### Backend
 
-This example is set up to produce compiled styles for `ui` components into the `dist` directory. The component `.tsx` files are consumed by the Next.js apps directly using `transpilePackages` in `next.config.ts`. This was chosen for several reasons:
+- Next.js server actions
+- Prisma
+- Postgress
 
-- Make sharing one `tailwind.config.ts` to apps and packages as easy as possible.
-- Make package compilation simple by only depending on the Next.js Compiler and `tailwindcss`.
-- Ensure Tailwind classes do not overwrite each other. The `ui` package uses a `ui-` prefix for it's classes.
-- Maintain clear package export boundaries.
+---
 
-Another option is to consume `packages/ui` directly from source without building. If using this option, you will need to update the `tailwind.config.ts` in your apps to be aware of your package locations, so it can find all usages of the `tailwindcss` class names for CSS compilation.
+## Architecture
 
-For example, in [tailwind.config.ts](packages/tailwind-config/tailwind.config.ts):
+### (Sui / Move Smart Contracts)
 
-```js
-  content: [
-    // app content
-    `src/**/*.{js,ts,jsx,tsx}`,
-    // include packages if not transpiling
-    "../../packages/ui/*.{js,ts,jsx,tsx}",
-  ],
-```
+- **Event Object:** Contains event details (organizer, name, date, location, ticket supply).
+- **Ticket NFT:** Each ticket is a unique Move object, with seat/info, owner, and status.
+- **Modules:**
+  - Event creation and management
+  - Ticket minting, transferring, validation (mark as used)
+  - Secondary market logic (resale, royalties)
 
-If you choose this strategy, you can remove the `tailwindcss` and `autoprefixer` dependencies from the `ui` package.
+---
 
-### Utilities
+## Quick Start
 
-This Turborepo has some additional tools already setup for you:
+1. **Clone the repository**
 
-- [Tailwind CSS](https://tailwindcss.com/) for styles
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+   ```sh
+   git clone https://github.com/your-org/sui-ticketmaster.git
+   cd sui-ticketmaster
+   ```
+
+2. **Deploy Move Smart Contracts**
+
+   - Install [Sui CLI](https://docs.sui.io/getting-started/installation).
+   - Build and deploy the Move modules in `/sources/`:
+
+     ```sh
+     sui move build
+     sui client publish --gas-budget 100000000
+     ```
+
+---
+
+## Roadmap
+
+- [ ] Core: Event creation, ticket minting, transfer, and validation
+- [ ] Secondary market: Resale with royalty enforcement
+- [ ] On-chain analytics
+- [ ] Fiat onramps and off-chain notifications
+- [ ] Mobile support and ticket scanning
+- [ ] User experience enhancements
+
+---
+
+## Security & Anti-Fraud
+
+- All tickets are NFTs, preventing double-selling and counterfeiting.
+- Ownership and transfer history are fully transparent on-chain.
+- Tickets are marked as used after entry to prevent reuse.
+- No personal data is stored on-chain.
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -am 'Add feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
+
+---
+
+## License
+
+MIT
+
+---
+
+## Resources
+
+- [Sui Documentation](https://docs.sui.io/)
+- [Move Language Book](https://move-language.github.io/move/)
+- [NFTs on Sui](https://docs.sui.io/learn/nfts/overview)
+
+---
