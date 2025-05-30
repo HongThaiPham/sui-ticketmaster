@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Card } from "@repo/ui/card";
 import { Gradient } from "@repo/ui/gradient";
+import { Button } from "@repo/ui/components/button";
 import { TurborepoLogo } from "@repo/ui/turborepo-logo";
 
 const LINKS = [
@@ -111,6 +112,7 @@ export default function Page() {
           </Card>
         ))}
       </div>
+      <Button variant={"default"}>sdsd</Button>
     </main>
   );
 }
