@@ -76,7 +76,6 @@ public fun get_event_creator<T>(event: &Event<T>): address {
     event.creator
 }
 
-#[test_only]
 public fun get_event_balance<T>(event: &Event<T>): u64 {
     event.balance.value()
 }
@@ -85,14 +84,7 @@ public fun get_event_balance<T>(event: &Event<T>): u64 {
 public fun get_event_name<T>(event: &Event<T>): string::String {
     event.name
 }
-#[test_only]
-public fun get_event_time<T>(event: &Event<T>): u64 {
-    event.time
-}
-#[test_only]
-public fun get_event_location<T>(event: &Event<T>): string::String {
-    event.location
-}
+
 #[test_only]    
 public fun get_event_tickets_available<T>(event: &Event<T>): u64 {
     event.tickets_available

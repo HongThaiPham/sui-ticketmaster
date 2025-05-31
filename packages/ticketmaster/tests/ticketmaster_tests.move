@@ -4,7 +4,7 @@ module ticketmaster::ticketmaster_tests;
 use sui::test_scenario;
 use sui::test_utils::{assert_eq};
 use std::string;
-use ticketmaster::event::{create_event, get_event_balance};
+use ticketmaster::event::{create_event, get_event_balance, get_event_tickets_available, get_event_tickets_sold};
 use ticketmaster::event::Event;
 use ticketmaster::event::buy_ticket;
 use sui::coin::{Self, Coin};
@@ -106,6 +106,15 @@ fun test_buy_ticket() {
         let bob_coin = test_scenario::take_from_sender<Coin<0x2::sui::SUI>>(&scenario);
         assert_eq(990, coin::value(&bob_coin)); // Bob should have 990 SUI left after buying the ticket
         scenario.return_to_sender(bob_coin);
+    };
+
+    // check tickets available and sold
+    test_scenario::next_tx(&mut scenario, alice);
+    {
+        let event_object = test_scenario::take_shared<Event<0x2::sui::SUI>>(&scenario);
+        assert_eq(get_event_tickets_available(&event_object), 99); // 1 ticket sold, so 99 available
+        assert_eq(get_event_tickets_sold(&event_object), 1); // 1 ticket sold
+        test_scenario::return_shared(event_object);
     };
 
     test_scenario::end(scenario);
