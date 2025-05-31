@@ -3,12 +3,15 @@ module ticketmaster::event;
 use std::string;
 use sui::balance::{Self,Balance};
 use sui::coin::{Self, Coin};
-use ticketmaster::ticket;
+use ticketmaster::ticket::{Self, TicketNFT};
 use sui::tx_context::sender;
+use sui::clock::Clock;
 
 const EInvalidPrice: u64 = 0;
 const EOutOfStock: u64 = 1;
 const EInfufficientFunds: u64 = 2;
+const ETicketNotMatch: u64 = 3;
+const EEventNotStarted: u64 = 4;
 
 public struct Event<phantom T> has key {
     id: UID,
@@ -22,7 +25,8 @@ public struct Event<phantom T> has key {
     price_per_ticket: u64, // Price per ticket in coins
 }
 
-public(package) entry fun create_event<T>(
+// Function to create a new event
+public(package) entry fun create<T>(
     creator: address,
     name: string::String,
     time: u64,
@@ -47,7 +51,7 @@ public(package) entry fun create_event<T>(
     transfer::share_object(event);
 }
 
-
+// Function to buy a ticket for an event
 public(package) fun buy_ticket<T>(
     event: &mut Event<T>,
     coin: &mut Coin<T>,
@@ -67,7 +71,23 @@ public(package) fun buy_ticket<T>(
 
     let event_id = object::id(event);
 
-    ticket::create_ticket(sender(ctx), event.name, event_id, ctx);
+    ticket::create(sender(ctx), event.name, event_id, ctx);
+}
+
+
+// Function to cosume a ticket
+public(package) fun consume_ticket<T>(
+    event: &Event<T>,
+    ticket: &mut TicketNFT,
+    clock: &Clock,
+    ctx: &TxContext
+) {
+    // check ticket match with event
+    assert!(&event.id.to_inner() == ticket::get_event_id(ticket), ETicketNotMatch);
+
+    // check if the event is ongoing
+    assert!(sui::clock::timestamp_ms(clock) >= event.time, EEventNotStarted);
+    ticket::consume(ticket, clock, ctx);
 }
 
 
