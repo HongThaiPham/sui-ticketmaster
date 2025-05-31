@@ -1,118 +1,491 @@
 import Image from "next/image";
-import { Card } from "@repo/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@repo/ui/components/card";
+import { Badge } from "@repo/ui/components/badge";
 import { Gradient } from "@repo/ui/gradient";
 import { Button } from "@repo/ui/components/button";
 import { TurborepoLogo } from "@repo/ui/turborepo-logo";
+import Link from "next/link";
+import {
+  CalendarIcon,
+  GlobeIcon,
+  LockIcon,
+  MapPinIcon,
+  ShieldIcon,
+  SparklesIcon,
+  TicketIcon,
+  UsersIcon,
+  ZapIcon,
+} from "lucide-react";
 
-const LINKS = [
+const featuredEvents = [
   {
-    title: "Docs",
-    href: "https://turborepo.com/docs",
-    description: "Find in-depth information about Turborepo features and API.",
+    id: 1,
+    title: "Sui Blockchain Summit 2024",
+    date: "March 15, 2024",
+    location: "San Francisco, CA",
+    price: "2.5 SUI",
+    image: "/placeholder.svg?height=300&width=400",
+    attendees: 1250,
+    category: "Technology",
+    gradient: "from-orange-500 to-red-500",
   },
   {
-    title: "Learn",
-    href: "https://turborepo.com/docs/handbook",
-    description: "Learn more about monorepos with our handbook.",
+    id: 2,
+    title: "Digital Art Revolution",
+    date: "March 20, 2024",
+    location: "New York, NY",
+    price: "1.8 SUI",
+    image: "/placeholder.svg?height=300&width=400",
+    attendees: 800,
+    category: "Art",
+    gradient: "from-amber-500 to-orange-500",
   },
   {
-    title: "Templates",
-    href: "https://turborepo.com/docs/getting-started/from-example",
-    description: "Choose from over 15 examples and deploy with a single click.",
-  },
-  {
-    title: "Deploy",
-    href: "https://vercel.com/new",
-    description:
-      "Instantly deploy your Turborepo to a shareable URL with Vercel.",
+    id: 3,
+    title: "DeFi Innovation Conference",
+    date: "March 25, 2024",
+    location: "London, UK",
+    price: "3.2 SUI",
+    image: "/placeholder.svg?height=300&width=400",
+    attendees: 2000,
+    category: "Finance",
+    gradient: "from-yellow-500 to-orange-500",
   },
 ];
 
 export default function Page() {
   return (
-    <main className="flex flex-col items-center justify-between min-h-screen p-24">
-      <div className="z-10 items-center justify-between w-full max-w-5xl font-mono text-sm lg:flex">
-        <p className="fixed top-0 left-0 flex justify-center w-full px-4 pt-8 pb-6 border backdrop-blur-2xl border-neutral-800 from-inherit lg:static lg:w-auto lg:rounded-xl lg:p-4">
-          examples/with-tailwind -&nbsp;
-          <code className="font-mono font-bold">web</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex items-end justify-center w-full h-48 lg:static lg:h-auto lg:w-auto">
-          <a
-            className="flex gap-2 p-8 pointer-events-none place-items-center lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-turbo&utm_medium=basic&utm_campaign=create-turbo"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            By{" "}
-            <Image
-              alt="Vercel Logo"
-              className="dark:invert"
-              height={24}
-              priority
-              src="/vercel.svg"
-              width={100}
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center ">
-        <div className="font-sans w-auto pb-16 pt-[48px] md:pb-24 lg:pb-32 md:pt-16 lg:pt-20 flex justify-between gap-8 items-center flex-col relative z-0">
-          <div className="z-50 flex items-center justify-center w-full">
-            <div className="absolute min-w-[614px] min-h-[614px]">
-              <Image
-                alt="Turborepo"
-                height={614}
-                src="circles.svg"
-                width={614}
-              />
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-900/20 to-slate-900">
+      {/* Header */}
+      <header className="border-b border-white/10 bg-black/20 backdrop-blur-xl sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center orange-glow">
+                <TicketIcon className="w-6 h-6 text-white" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-400 rounded-full animate-pulse"></div>
             </div>
-            <div className="absolute z-50 flex items-center justify-center w-64 h-64">
-              <Gradient
-                className="opacity-90 w-[120px] h-[120px]"
-                conic
-                small
-              />
-            </div>
-
-            <div className="flex justify-center items-center z-50">
-              <TurborepoLogo />
+            <div>
+              <span className="text-2xl font-bold text-gradient">
+                Sui Ticketmaster
+              </span>
+              <div className="text-xs text-orange-400 font-medium">
+                Powered by Sui Blockchain
+              </div>
             </div>
           </div>
-          <Gradient
-            className="top-[-500px] opacity-[0.15] w-[1000px] h-[1000px]"
-            conic
-          />
-          <div className="z-50 flex flex-col items-center justify-center gap-5 px-6 text-center lg:gap-6">
-            <svg
-              className="w-[160px] md:w-[200px] fill-black dark:fill-white"
-              viewBox="0 0 506 50"
-              width={200}
-              xmlns="http://www.w3.org/2000/svg"
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link
+              href="/events"
+              className="text-gray-300 hover:text-orange-400 transition-colors"
             >
-              <title>Turborepo logo</title>
-              <path d="M53.7187 12.0038V1.05332H0.945312V12.0038H20.8673V48.4175H33.7968V12.0038H53.7187Z" />
-              <path d="M83.5362 49.1431C99.764 49.1431 108.67 40.8972 108.67 27.3081V1.05332H95.7401V26.0547C95.7401 33.6409 91.7821 37.9287 83.5362 37.9287C75.2904 37.9287 71.3324 33.6409 71.3324 26.0547V1.05332H58.4029V27.3081C58.4029 40.8972 67.3084 49.1431 83.5362 49.1431Z" />
-              <path d="M128.462 32.7174H141.325L151.484 48.4175H166.327L154.848 31.3321C161.313 29.0232 165.271 23.8778 165.271 16.8853C165.271 6.72646 157.685 1.05332 146.141 1.05332H115.532V48.4175H128.462V32.7174ZM128.462 22.4925V11.8719H145.481C150.033 11.8719 152.54 13.8509 152.54 17.2152C152.54 20.3816 150.033 22.4925 145.481 22.4925H128.462Z" />
-              <path d="M171.287 48.4175H205.128C215.683 48.4175 221.752 43.404 221.752 35.0262C221.752 29.419 218.189 25.593 213.967 23.8778C216.87 22.4925 220.432 19.1942 220.432 13.9828C220.432 5.60502 214.495 1.05332 204.006 1.05332H171.287V48.4175ZM183.689 19.59V11.542H202.687C206.249 11.542 208.228 12.9273 208.228 15.566C208.228 18.2047 206.249 19.59 202.687 19.59H183.689ZM183.689 29.2871H203.875C207.371 29.2871 209.284 31.0022 209.284 33.5749C209.284 36.1476 207.371 37.8628 203.875 37.8628H183.689V29.2871Z" />
-              <path d="M253.364 0.261719C236.806 0.261719 224.866 10.6185 224.866 24.7354C224.866 38.8523 236.806 49.2091 253.364 49.2091C269.922 49.2091 281.796 38.8523 281.796 24.7354C281.796 10.6185 269.922 0.261719 253.364 0.261719ZM253.364 11.4761C262.072 11.4761 268.602 16.6215 268.602 24.7354C268.602 32.8493 262.072 37.9947 253.364 37.9947C244.656 37.9947 238.126 32.8493 238.126 24.7354C238.126 16.6215 244.656 11.4761 253.364 11.4761Z" />
-              <path d="M300.429 32.7174H313.292L323.451 48.4175H338.294L326.815 31.3321C333.28 29.0232 337.238 23.8778 337.238 16.8853C337.238 6.72646 329.652 1.05332 318.108 1.05332H287.499V48.4175H300.429V32.7174ZM300.429 22.4925V11.8719H317.448C322 11.8719 324.507 13.8509 324.507 17.2152C324.507 20.3816 322 22.4925 317.448 22.4925H300.429Z" />
-              <path d="M343.254 1.05332V48.4175H389.299V37.467H355.92V29.7489H385.539V19.0622H355.92V12.0038H389.299V1.05332H343.254Z" />
-              <path d="M408.46 33.3111H425.677C437.221 33.3111 444.807 27.7699 444.807 17.2152C444.807 6.59453 437.221 1.05332 425.677 1.05332H395.53V48.4175H408.46V33.3111ZM408.46 22.5585V11.8719H424.951C429.569 11.8719 432.076 13.8509 432.076 17.2152C432.076 20.5135 429.569 22.5585 424.951 22.5585H408.46Z" />
-              <path d="M476.899 0.261719C460.341 0.261719 448.401 10.6185 448.401 24.7354C448.401 38.8523 460.341 49.2091 476.899 49.2091C493.456 49.2091 505.33 38.8523 505.33 24.7354C505.33 10.6185 493.456 0.261719 476.899 0.261719ZM476.899 11.4761C485.606 11.4761 492.137 16.6215 492.137 24.7354C492.137 32.8493 485.606 37.9947 476.899 37.9947C468.191 37.9947 461.66 32.8493 461.66 24.7354C461.66 16.6215 468.191 11.4761 476.899 11.4761Z" />
-            </svg>
+              Explore Events
+            </Link>
+            <Link
+              href="/create"
+              className="text-gray-300 hover:text-orange-400 transition-colors"
+            >
+              Create Event
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-gray-300 hover:text-orange-400 transition-colors"
+            >
+              Dashboard
+            </Link>
+          </nav>
+          <div className="flex items-center space-x-3">
+            <Button
+              variant="outline"
+              className="border-white/20 text-white hover:bg-white/10"
+            >
+              Connect Wallet
+            </Button>
+            <Button className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700">
+              Launch App
+            </Button>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="grid mb-32 text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        {LINKS.map(({ title, href, description }) => (
-          <Card href={href} key={title} title={title}>
-            {description}
-          </Card>
-        ))}
-      </div>
-      <Button variant={"default"}>sdsd</Button>
-    </main>
+      {/* Hero Section */}
+      <section className="relative py-32 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-red-600/20 blur-3xl"></div>
+        <div className="container mx-auto text-center relative z-10">
+          <div className="inline-flex items-center space-x-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-2 mb-8">
+            <SparklesIcon className="w-4 h-4 text-orange-400" />
+            <span className="text-sm text-gray-300">
+              Next-Gen Event Platform
+            </span>
+          </div>
+
+          <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
+            <span className="text-white">The Future of</span>
+            <br />
+            <span className="text-gradient">Event Ticketing</span>
+          </h1>
+
+          <p className="text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Experience seamless event management with blockchain-verified
+            tickets, instant transfers, and fraud-proof verification on the Sui
+            network.
+          </p>
+
+          <div className="flex flex-col md:flex-row gap-6 justify-center">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-lg px-8 py-4 h-auto orange-glow"
+            >
+              <Link href="/events" className="flex items-center space-x-2">
+                <GlobeIcon className="w-5 h-5" />
+                <span>Explore Events</span>
+              </Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-orange-500/50 text-orange-400 hover:bg-orange-500/10 text-lg px-8 py-4 h-auto"
+            >
+              <Link href="/create" className="flex items-center space-x-2">
+                <ZapIcon className="w-5 h-5" />
+                <span>Create Event</span>
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-24 px-4 relative">
+        <div className="container mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Why Choose Sui Ticketmaster?
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Built on cutting-edge blockchain technology for unparalleled
+              security and user experience
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform orange-glow">
+                  <ShieldIcon className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-white text-xl">
+                  Blockchain Security
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400 text-center">
+                  Every ticket is an NFT secured on Sui blockchain, making
+                  counterfeiting impossible and ownership transparent.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform orange-glow">
+                  <ZapIcon className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-white text-xl">
+                  Instant Verification
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400 text-center">
+                  Lightning-fast QR code scanning with real-time blockchain
+                  verification for seamless event entry.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-300 group">
+              <CardHeader className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform orange-glow">
+                  <LockIcon className="w-8 h-8 text-white" />
+                </div>
+                <CardTitle className="text-white text-xl">
+                  True Ownership
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400 text-center">
+                  Own your tickets as digital assets. Transfer, resell, or
+                  collect them with full ownership rights.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Events */}
+      <section className="py-24 px-4">
+        <div className="container mx-auto">
+          <div className="flex justify-between items-center mb-16">
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-2">
+                Trending Events
+              </h2>
+              <p className="text-gray-400">
+                Discover the hottest events in the Web3 space
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              className="border-orange-500/50 text-orange-400 hover:bg-orange-500/10"
+              asChild
+            >
+              <Link href="/events">View All Events</Link>
+            </Button>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {featuredEvents.map((event) => (
+              <Card
+                key={event.id}
+                className="bg-white/5 backdrop-blur-sm border-white/10 overflow-hidden hover:bg-white/10 transition-all duration-300 group"
+              >
+                <div className="relative">
+                  <Image
+                    src={event.image || "/placeholder.svg"}
+                    alt={event.title}
+                    width={400}
+                    height={300}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <Badge
+                    className={`absolute top-4 left-4 bg-gradient-to-r ${event.gradient} border-0 text-white`}
+                  >
+                    {event.category}
+                  </Badge>
+                  <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-1">
+                    <span className="text-orange-400 font-bold">
+                      {event.price}
+                    </span>
+                  </div>
+                </div>
+
+                <CardHeader>
+                  <CardTitle className="text-white text-lg line-clamp-2">
+                    {event.title}
+                  </CardTitle>
+                  <CardDescription>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-gray-400">
+                        <CalendarIcon className="w-4 h-4" />
+                        {event.date}
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-400">
+                        <MapPinIcon className="w-4 h-4" />
+                        {event.location}
+                      </div>
+                    </div>
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center gap-2">
+                      <UsersIcon className="w-4 h-4 text-gray-500" />
+                      <span className="text-gray-400">
+                        {event.attendees.toLocaleString()} attending
+                      </span>
+                    </div>
+                  </div>
+                  <Button
+                    className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+                    asChild
+                  >
+                    <Link href={`/events/${event.id}`}>Get Tickets</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-24 px-4 bg-black/20">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-4xl font-bold text-gradient mb-2">50K+</div>
+              <div className="text-gray-400">Events Created</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-gradient mb-2">2M+</div>
+              <div className="text-gray-400">Tickets Sold</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-gradient mb-2">500K+</div>
+              <div className="text-gray-400">Active Users</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold text-gradient mb-2">99.9%</div>
+              <div className="text-gray-400">Uptime</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black/40 border-t border-white/10 py-16 px-4">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center orange-glow">
+                  <TicketIcon className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xl font-bold text-gradient">
+                  Sui Ticketmaster
+                </span>
+              </div>
+              <p className="text-gray-400 mb-4">
+                The future of event ticketing on Sui blockchain.
+              </p>
+              <div className="flex space-x-4">
+                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-orange-500/20 transition-colors cursor-pointer">
+                  <span className="text-white text-sm">𝕏</span>
+                </div>
+                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-orange-500/20 transition-colors cursor-pointer">
+                  <span className="text-white text-sm">DC</span>
+                </div>
+                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-orange-500/20 transition-colors cursor-pointer">
+                  <span className="text-white text-sm">TG</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-white mb-4">Platform</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link
+                    href="/events"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Browse Events
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/create"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Create Event
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/dashboard"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/analytics"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Analytics
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-white mb-4">Resources</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link
+                    href="/docs"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Documentation
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/api"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    API Reference
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/support"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Support
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/blog"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Blog
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-white mb-4">Legal</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>
+                  <Link
+                    href="/privacy"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/terms"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/security"
+                    className="hover:text-orange-400 transition-colors"
+                  >
+                    Security
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-white/10 mt-12 pt-8 text-center text-gray-400">
+            <p>
+              &copy; 2024 Sui Ticketmaster. All rights reserved. Built on Sui
+              Network.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

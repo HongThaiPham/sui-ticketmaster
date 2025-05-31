@@ -2,26 +2,34 @@
 @import "@repo/tailwind-config";
 @import "@repo/ui/styles.css";
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.gradient-border {
+  background: linear-gradient(45deg, #f97316, #ea580c, #fb923c);
+  padding: 1px;
+  border-radius: 0.75rem;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.gradient-border-inner {
+  background: hsl(var(--background));
+  border-radius: calc(0.75rem - 1px);
+}
+
+.neon-glow {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #f97316, #ea580c, #fb923c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.orange-glow {
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.4);
 }
