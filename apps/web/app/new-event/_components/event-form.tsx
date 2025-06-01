@@ -42,7 +42,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@repo/ui/components/popover";
-import { format, startOfDay } from "date-fns";
+import { format, getUnixTime, startOfDay } from "date-fns";
 import { Calendar } from "@repo/ui/components/calendar";
 import {
   useCurrentAccount,
@@ -57,15 +57,10 @@ type FormSchemaType = z.infer<typeof CreatEventSchema>;
 const EventForm = () => {
   const currentAccount = useCurrentAccount();
   const router = useRouter();
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
 
   const { mutateAsync: signAndExecuteTransaction } =
     useSignAndExecuteTransaction();
   const ticketMasterPackageId = useNetworkVariable("ticketMasterPackageId");
-
   const {
     form,
     action: { isExecuting, isPending },
@@ -106,11 +101,12 @@ const EventForm = () => {
       target: `${ticketMasterPackageId}::ticketmaster::create_event`,
       arguments: [
         tx.pure.string(values.name),
-        tx.pure.u64(1_000_000_000),
+        tx.pure.u64(getUnixTime(values.startAt)),
         tx.pure.string(values.location),
         tx.pure.u64(values.ticketAvailable),
         tx.pure.u64(values.ticketPrice * 1_000_000),
       ],
+      typeArguments: ["0x2::sui::SUI"],
     });
     toast.promise(
       signAndExecuteTransaction(

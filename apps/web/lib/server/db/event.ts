@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import { returnValidationErrors } from "next-safe-action";
 import { uploadImage } from "../upload-image";
 import { z } from "zod";
+import { getUnixTime } from "date-fns";
 
 export const getEventByIdAction = safeActionClient
     .schema(
@@ -39,9 +40,9 @@ export const createEventAction = safeActionClient
         const {
             name,
             location,
-            timeRange: { startAt, endAt },
+            startAt, endAt,
             image,
-            wallet } = parsedInput;
+            wallet, ticketPrice } = parsedInput;
 
         const cookieStore = await cookies();
         const idToken = cookieStore.get("privy-id-token")?.value;
@@ -77,12 +78,14 @@ export const createEventAction = safeActionClient
 
             const event = await prisma.event.create({
                 data: {
+
                     name,
                     location,
-                    startAt,
-                    endAt,
+                    startAt: getUnixTime(startAt),
+                    endAt: getUnixTime(endAt),
                     images: imageUrls,
-                    creatorWallet: wallet
+                    creatorWallet: wallet,
+                    ticket_price: ticketPrice,
                 },
             });
             return {
