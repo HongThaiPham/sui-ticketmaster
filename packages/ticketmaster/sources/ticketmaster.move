@@ -4,7 +4,6 @@ use ticketmaster::event::Event;
 
 
 public fun create_event<T>(
-    creator: address,
     name: string::String,
     time: u64,
     location: string::String,
@@ -13,7 +12,6 @@ public fun create_event<T>(
     ctx: &mut TxContext
 ) {
     ticketmaster::event::create<T>(
-        creator,
         name,
         time,
         location,

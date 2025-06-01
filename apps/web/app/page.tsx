@@ -23,6 +23,9 @@ import {
   ZapIcon,
 } from "lucide-react";
 import ThemeToogle from "../components/ThemeToogle";
+import SuiConnectButton from "@/components/SuiConnectButton";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const featuredEvents = [
   {
@@ -60,61 +63,7 @@ const featuredEvents = [
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-orange-900/20 to-slate-900">
-      {/* Header */}
-      <header className="bg-white border-gray-200 border-b dark:border-white/10 dark:bg-black/20 dark:backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center dark:orange-glow">
-                <TicketIcon className="w-6 h-6 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-orange-400 rounded-full animate-pulse"></div>
-            </div>
-            <div>
-              <span className="text-2xl font-bold text-orange-600 dark:bg-linear-135 dark:from-[#f97316] dark:via-[#ea580c] dark:to-[#fb923c] bg-clip-text dark:text-transparent">
-                Sui Ticketmaster
-              </span>
-              <div className="text-xs text-orange-500 font-medium">
-                Powered by Sui Blockchain
-              </div>
-            </div>
-          </div>
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/events"
-              className="text-gray-700 hover:text-orange-600 dark:text-gray-300 dark:hover:text-orange-400 transition-colors"
-            >
-              Explore Events
-            </Link>
-            <Link
-              href="/create"
-              className="text-gray-700 hover:text-orange-600 dark:text-gray-300 dark:hover:text-orange-400 transition-colors"
-            >
-              Create Event
-            </Link>
-            <Link
-              href="/dashboard"
-              className="text-gray-700 hover:text-orange-600 dark:text-gray-300 dark:hover:text-orange-400 transition-colors"
-            >
-              Dashboard
-            </Link>
-          </nav>
-          <div className="flex items-center space-x-3">
-            <ThemeToogle />
-            <Button
-              variant="outline"
-              className="light-button-outline dark:border-white/20 dark:text-white dark:hover:bg-white/10"
-            >
-              Connect Wallet
-            </Button>
-            <Button className="light-button dark:bg-gradient-to-r dark:from-orange-600 dark:to-red-600 dark:hover:from-orange-700 dark:hover:to-red-700">
-              Launch App
-            </Button>
-          </div>
-        </div>
-      </header>
-
+    <>
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 px-4 overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100 dark:bg-transparent dark:from-transparent dark:to-transparent">
         <div className="absolute inset-0 bg-gradient-to-r from-orange-200/20 to-red-200/20 dark:from-orange-600/20 dark:to-red-600/20 dark:blur-3xl"></div>
@@ -362,149 +311,7 @@ export default function Page() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 dark:bg-black/40 border-t border-gray-800 dark:border-white/10 py-16 px-4">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl flex items-center justify-center dark:orange-glow">
-                  <TicketIcon className="w-6 h-6 text-white" />
-                </div>
-                <span className="text-xl font-bold text-orange-500 dark:text-gradient">
-                  Sui Ticketmaster
-                </span>
-              </div>
-              <p className="text-gray-400 mb-4">
-                The future of event ticketing on Sui blockchain.
-              </p>
-              <div className="flex space-x-4">
-                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-orange-500/20 transition-colors cursor-pointer">
-                  <span className="text-white text-sm">𝕏</span>
-                </div>
-                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-orange-500/20 transition-colors cursor-pointer">
-                  <span className="text-white text-sm">DC</span>
-                </div>
-                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-orange-500/20 transition-colors cursor-pointer">
-                  <span className="text-white text-sm">TG</span>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-white mb-4">Platform</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link
-                    href="/events"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Browse Events
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/create"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Create Event
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/dashboard"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/analytics"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Analytics
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-white mb-4">Resources</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link
-                    href="/docs"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Documentation
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/api"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    API Reference
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/support"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Support
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/blog"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Blog
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-white mb-4">Legal</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <Link
-                    href="/privacy"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/terms"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/security"
-                    className="hover:text-orange-400 transition-colors"
-                  >
-                    Security
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 dark:border-white/10 mt-12 pt-8 text-center text-gray-400">
-            <p>
-              &copy; 2024 Sui Ticketmaster. All rights reserved. Built on Sui
-              Network.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+      <Footer />
+    </>
   );
 }

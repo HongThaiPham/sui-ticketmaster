@@ -14,15 +14,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  wallet    String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Event     Event[]
-}
+// model User {
+//   id        String   @id @default(cuid())
+//   email     String   @unique
+//   wallet    String   @unique
+//   name      String?
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   // Event     Event[]
+// }
 
 enum LocationType {
   ONLINE
@@ -30,19 +30,17 @@ enum LocationType {
 }
 
 model Event {
-  id              String       @id @default(cuid())
-  name            String
-  thumbnailUrl    String?
-  startAt         DateTime
-  endAt           DateTime
-  locationType    LocationType @default(ONLINE)
-  locationName    String?
-  locationAddress String?
-  locationUrl     String?
-  maxTickets      Int
-  isPublished     Boolean      @default(false)
-  creatorId       String
-  creator         User         @relation(fields: [creatorId], references: [id])
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id            String       @id @default(cuid())
+  name          String
+  images        String[]     @default([])
+  startAt       BigInt
+  endAt         BigInt
+  location      String?
+  creatorWallet String
+  ticket_price  BigInt
+  // createdBy     User     @relation(fields: [createdById], references: [id])
+  // createdById   String
+  locationType  LocationType @default(ONLINE)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }

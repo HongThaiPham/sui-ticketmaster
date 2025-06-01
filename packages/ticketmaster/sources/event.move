@@ -27,7 +27,6 @@ public struct Event<phantom T> has key {
 
 // Function to create a new event
 public(package) entry fun create<T>(
-    creator: address,
     name: string::String,
     time: u64,
     location: string::String,
@@ -38,7 +37,7 @@ public(package) entry fun create<T>(
     assert!(price_per_ticket > 0, EInvalidPrice);
     let event = Event {
         id: object::new(ctx),
-        creator,
+        creator: sender(ctx),
         balance: balance::zero<T>(),
         name,
         time,

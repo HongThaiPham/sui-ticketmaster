@@ -25,7 +25,6 @@ fun test_create_event() {
     let mut scenario = test_scenario::begin(alice);
     {
         create_event<0x2::sui::SUI>(
-            alice,
             string::utf8(b"Concert"),
             scenario.ctx().epoch_timestamp_ms() + 1, // Example timestamp
             string::utf8(b"Stadium"),
@@ -56,7 +55,7 @@ fun test_buy_ticket() {
     let mut scenario = test_scenario::begin(alice);
     {
         create_event<0x2::sui::SUI>(
-            alice,
+    
             string::utf8(b"Concert"),
             scenario.ctx().epoch_timestamp_ms() + 1, // Example timestamp
             string::utf8(b"Stadium"),
@@ -135,7 +134,7 @@ fun test_comsume_and_burn_ticket() {
     let mut scenario = test_scenario::begin(alice);
     {
         create_event<0x2::sui::SUI>(
-            alice,
+
             string::utf8(b"Concert"),
             scenario.ctx().epoch_timestamp_ms() + 1, // Example timestamp
             string::utf8(b"Stadium"),
@@ -205,7 +204,7 @@ fun test_buy_ticket_fail_EInfufficientFunds() {
     let mut scenario = test_scenario::begin(alice);
     {
         create_event<0x2::sui::SUI>(
-            alice,
+    
             string::utf8(b"Concert"),
             scenario.ctx().epoch_timestamp_ms() + 1, // Example timestamp
             string::utf8(b"Stadium"),
@@ -248,7 +247,7 @@ fun test_buy_ticket_fail_EOutOfStock() {
     let mut scenario = test_scenario::begin(alice);
     {
         create_event<0x2::sui::SUI>(
-            alice,
+        
             string::utf8(b"Concert"),
             scenario.ctx().epoch_timestamp_ms() + 1, // Example timestamp
             string::utf8(b"Stadium"),
@@ -289,7 +288,7 @@ fun test_create_event_fail() {
     let mut scenario = test_scenario::begin(alice);
     {
         create_event<0x2::sui::SUI>(
-            alice,
+    
             string::utf8(b"Concert"),
             scenario.ctx().epoch_timestamp_ms() + 1, // Example timestamp
             string::utf8(b"Stadium"),
