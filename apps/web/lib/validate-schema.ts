@@ -1,3 +1,4 @@
+import { startOfDay } from "date-fns";
 import { z } from "zod";
 // import { zfd } from "zod-form-data";
 
@@ -24,14 +25,21 @@ export const CreatEventSchema = z.object({
         .string({ message: "Location is required" })
         .min(1, "Location is required")
         .max(200, "Location must be less than 200 characters"),
-    timeRange: z
-        .object({
-            startAt: z.number().int().min(0),
-            endAt: z.number().int().min(0),
+    startAt: z
+        .date({
+            required_error: "Start date is required",
         })
-        .refine((data) => data.startAt < data.endAt, {
-            message: "Start time must be before end time",
-        }),
+        .refine(
+            (date) => {
+                return date.getTime() > startOfDay(new Date()).getTime();
+            },
+            {
+                message: "Start date must be in the future",
+            }
+        ),
+    endAt: z.date({
+        required_error: "End date is required",
+    }),
     image: z
         .any()
         .refine(
@@ -46,4 +54,8 @@ export const CreatEventSchema = z.object({
             (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
             ".jpg, .jpeg, .png and .webp files are accepted."
         ),
+    ticketAvailable: z
+        .coerce.number({ message: "Ticket available is required" })
+        .min(0, "Ticket available must be a positive number"),
+
 });

@@ -42,7 +42,7 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@repo/ui/components/popover";
-import { format } from "date-fns";
+import { format, startOfDay } from "date-fns";
 import { Calendar } from "@repo/ui/components/calendar";
 import {
   useCurrentAccount,
@@ -50,6 +50,9 @@ import {
 } from "@mysten/dapp-kit";
 import { useNetworkVariable } from "@/lib/networkConfig";
 import { Transaction } from "@mysten/sui/transactions";
+import z from "zod";
+import { cn } from "@repo/ui/lib/utils";
+type FormSchemaType = z.infer<typeof CreatEventSchema>;
 
 const EventForm = () => {
   const currentAccount = useCurrentAccount();
@@ -87,56 +90,39 @@ const EventForm = () => {
         ticketPrice: 0,
         location: "",
         image: [],
-        timeRange: {
-          startAt: 0,
-          endAt: 0,
-        },
+
+        startAt: new Date(),
+        endAt: new Date(new Date().setHours(new Date().getHours() + 1)),
+
+        ticketAvailable: 1,
       },
     },
     errorMapProps: {},
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: FormSchemaType) => {
+    const tx = new Transaction();
+    tx.moveCall({
+      target: `${ticketMasterPackageId}::ticketmaster::create_event`,
+      arguments: [
+        tx.pure.string(values.name),
+        tx.pure.u64(1_000_000_000),
+        tx.pure.string(values.location),
+        tx.pure.u64(values.ticketAvailable),
+        tx.pure.u64(values.ticketPrice * 1_000_000),
+      ],
+    });
     toast.promise(
-      new Promise((resolve, reject) => {
-        const tx = new Transaction();
-        tx.moveCall({
-          target: `${ticketMasterPackageId}::ticketmaster::create_event`,
-          arguments: [
-            tx.object(),
-            tx.pure.u64(1_000_000_000),
-            tx.object(currentAccount.address),
-          ],
-        });
-        toast.promise(
-          signAndExecuteTransaction(
-            {
-              transaction: tx,
-            },
-            {
-              onSuccess: ({ digest }) => {
-                console.log("executed transaction", digest);
-              },
-            }
-          ),
-          {
-            pending: "Minting 1000 Faucet Coin to your account",
-            success: {
-              render: ({ data: { digest } }) => {
-                return (
-                  <Flex direction={"column"}>
-                    Mint 1000 faucet coin successfully{" "}
-                    <a href={getExplorerUrl(digest)} target="_blank">
-                      {getExplorerUrl(digest)}
-                    </a>
-                  </Flex>
-                );
-              },
-            },
-            error: "Mint Faucet Coin failed",
-          }
-        );
-      }),
+      signAndExecuteTransaction(
+        {
+          transaction: tx,
+        },
+        {
+          onSuccess: ({ digest }) => {
+            console.log("executed transaction", digest);
+          },
+        }
+      ),
       {
         loading: "Creating event...",
         success: "Event created successfully!",
@@ -242,6 +228,30 @@ const EventForm = () => {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="ticketAvailable"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-900 dark:text-white flex items-center space-x-2">
+                        <TicketIcon className="w-4 h-4" />
+                        <span>Tickets Available</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="1"
+                          className="bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white placeholder:text-gray-500"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription className="text-gray-500 dark:text-gray-400">
+                        Total number of tickets available for this event
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </CardContent>
           </Card>
@@ -258,83 +268,101 @@ const EventForm = () => {
             <CardContent className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Start Date & Time */}
-                <div className="space-y-4">
-                  <Label className="text-gray-900 dark:text-white font-medium">
-                    Start Date & Time
-                  </Label>
-                  <div className="space-y-2">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start text-left font-normal bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10"
+                <FormField
+                  control={form.control}
+                  name="startAt"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Start Date & Time</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full justify-start text-left font-normal bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Select start date and time</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-auto p-0 bg-white dark:bg-slate-800 border-gray-200 dark:border-white/20"
+                          align="start"
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {startDate
-                            ? format(startDate, "PPP")
-                            : "Pick start date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-white dark:bg-slate-800 border-gray-200 dark:border-white/20">
-                        <Calendar
-                          mode="single"
-                          selected={startDate}
-                          onSelect={setStartDate}
-                          disabled={(date) => date < new Date()}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <Input
-                      type="time"
-                      value={startTime}
-                      onChange={(e) => setStartTime(e.target.value)}
-                      className="bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white"
-                    />
-                  </div>
-                </div>
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) => date < startOfDay(new Date())}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        Select when your event will begin (must be a future
+                        date)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 {/* End Date & Time */}
-                <div className="space-y-4">
-                  <Label className="text-gray-900 dark:text-white font-medium">
-                    End Date & Time
-                  </Label>
-                  <div className="space-y-2">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start text-left font-normal bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10"
+                <FormField
+                  control={form.control}
+                  name="endAt"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>End Date & Time</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full justify-start text-left font-normal bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Select end date and time</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-auto p-0 bg-white dark:bg-slate-800 border-gray-200 dark:border-white/20"
+                          align="start"
                         >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {endDate ? format(endDate, "PPP") : "Pick end date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-white dark:bg-slate-800 border-gray-200 dark:border-white/20">
-                        <Calendar
-                          mode="single"
-                          selected={endDate}
-                          onSelect={setEndDate}
-                          disabled={(date) => date < new Date()}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <Input
-                      type="time"
-                      value={endTime}
-                      onChange={(e) => setEndTime(e.target.value)}
-                      className="bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white"
-                    />
-                  </div>
-                </div>
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) => date < startOfDay(new Date())}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        Select when your event will end (must be after start
+                        time)
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
-
-              {form.formState.errors.timeRange && (
-                <p className="text-sm text-red-600 dark:text-red-400">
-                  {form.formState.errors.timeRange.message}
-                </p>
-              )}
             </CardContent>
           </Card>
           <Card className="card-background">

@@ -158,11 +158,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             return e.message;
           });
 
-          addToast({
-            title: "File Rejected",
-            description: errorMessages.join(", "),
-            severity: "danger",
-          });
+          toast(errorMessages.join(", "));
         });
       }
 

@@ -14,6 +14,7 @@ import { ScrollArea } from "@repo/ui/components/scroll-area";
 import { useControllableState } from "@/hooks/use-controllable-state";
 import { cn } from "@repo/ui/lib/utils";
 import { formatBytes } from "@/lib/utils";
+import { UploadIcon, XIcon } from "lucide-react";
 
 interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -210,7 +211,7 @@ export function FileUploader(props: FileUploaderProps) {
             {isDragActive ? (
               <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
                 <div className="rounded-full border border-dashed p-3">
-                  <IconUpload
+                  <UploadIcon
                     className="text-muted-foreground size-7"
                     aria-hidden="true"
                   />
@@ -222,7 +223,7 @@ export function FileUploader(props: FileUploaderProps) {
             ) : (
               <div className="flex flex-col items-center justify-center gap-4 sm:px-5">
                 <div className="rounded-full border border-dashed p-3">
-                  <IconUpload
+                  <UploadIcon
                     className="text-muted-foreground size-7"
                     aria-hidden="true"
                   />
@@ -303,7 +304,7 @@ function FileCard({ file, progress, onRemove }: FileCardProps) {
           disabled={progress !== undefined && progress < 100}
           className="size-8 rounded-full"
         >
-          <IconX className="text-muted-foreground" />
+          <XIcon className="text-muted-foreground" />
           <span className="sr-only">Remove file</span>
         </Button>
       </div>
