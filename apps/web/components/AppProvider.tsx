@@ -10,7 +10,7 @@ const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppThemeProvider>
-        <SuiClientProvider networks={networkConfig} defaultNetwork="devnet">
+        <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
           <WalletProvider>{children}</WalletProvider>
         </SuiClientProvider>
       </AppThemeProvider>

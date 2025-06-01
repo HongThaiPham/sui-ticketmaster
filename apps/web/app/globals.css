@@ -1,8 +1,9 @@
 @import "tailwindcss";
 @import "@repo/tailwind-config";
-@import "@repo/ui/styles.css";
+@import "@repo/ui/globals.css";
 
-.glass-effect {
+/* Dark mode specific styles */
+.dark .glass-effect {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -32,4 +33,22 @@
 
 .orange-glow {
   box-shadow: 0 0 30px rgba(249, 115, 22, 0.4);
+}
+
+.card-background {
+  @apply bg-white dark:bg-white/5 dark:backdrop-blur-sm border border-gray-200 dark:border-white/10;
+}
+
+/* Button styles for both modes */
+.primary-button {
+  @apply bg-orange-500 hover:bg-orange-600 text-white dark:bg-gradient-to-r dark:from-orange-600 dark:to-red-600 dark:hover:from-orange-700 dark:hover:to-red-700;
+}
+
+.outline-button {
+  @apply border border-orange-500 text-orange-600 hover:bg-orange-50 dark:border-white/20 dark:text-white dark:hover:bg-white/10;
+}
+
+/* Badge styles */
+.primary-badge {
+  @apply bg-orange-100 text-orange-800 dark:bg-gradient-to-r dark:from-orange-500 dark:to-red-500 dark:text-white;
 }
